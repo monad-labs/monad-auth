@@ -3,12 +3,12 @@ defmodule MonadAuth.Accounts.Domain do
   import Ecto.Changeset
   alias MonadAuth.Accounts.Domain
 
-
+  @primary_key false
   schema "accounts_domain" do
-    field :name, :string
+    field :name, :string, primary_key: true
     field :user_count, :integer
 
-    timestamps()
+    # timestamps()
   end
 
   @doc false

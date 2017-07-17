@@ -15,7 +15,7 @@ defmodule MonadAuth.Web.DomainController do
     with {:ok, %Domain{} = domain} <- Accounts.create_domain(domain_params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", domain_path(conn, :show, domain))
+      # |> put_resp_header("location", domain_path(conn, :show, domain))
       |> render("show.json", domain: domain)
     end
   end
@@ -29,7 +29,7 @@ defmodule MonadAuth.Web.DomainController do
         |>render(MonadAuth.Web.ErrorView, "404.json")
       _ ->
         render(conn, "show.json", domain: domain)
-    end    
+    end
   end
 
   def update(conn, %{"id" => id, "domain" => domain_params}) do

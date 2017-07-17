@@ -46,4 +46,23 @@ defmodule MonadAuth.CassandraRepo do
 
   def gen_where([], where), do: where
 
+
+  def insert_domain(changeset) do
+    with {:ok, _changeset} <- insert_valid(changeset),
+         {:ok, _result} <- gen_insert_query(changeset),
+         do: {:ok, Ecto.Changeset.apply_changes(changeset)}
+
+  end
+  def insert_valid(changeset) do
+    case changeset.valid? do
+      true -> {:ok, changeset}
+      false ->{:error, changeset}
+    end
+  end
+
+  def gen_insert_query(changeset) do
+    prepared_insert = Xandra.prepare!(:xandra_pool, "INSERT INTO domains (name) VALUES (:name) IF NOT EXISTS", pool: DBConnection.Poolboy)
+    Xandra.execute(:xandra_pool, prepared_insert, changeset.params, pool: DBConnection.Poolboy)
+  end
+
 end

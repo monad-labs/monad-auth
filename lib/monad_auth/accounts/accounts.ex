@@ -65,11 +65,9 @@ defmodule MonadAuth.Accounts do
 
   """
   def create_domain(attrs \\ %{}) do
-    IO.inspect attrs
-    IO.puts "--------------------------"
     %Domain{}
     |> Domain.changeset(attrs)
-    |> IO.inspect
+    |> CassandraRepo.insert_domain
   end
 
   @doc """
